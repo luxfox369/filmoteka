@@ -1,5 +1,5 @@
 export { buttonWatchedRefs, buttonQueueRefs, fWatched, fQueue };
-
+import { fetchTrailers } from "./trailers";
 // import { insertCardMarkup } from './cardMarkup';
 // import ApiMovie from './serviseAPI';
 // import { apiMovie } from './serviseAPI';
@@ -28,10 +28,10 @@ const queueBtnAdd = document.querySelector('.library__nav-btn----queue');
 // const movieContainer = document.querySelector('.card__container');
 const movieContainer = document.querySelector('.home__container');
 // libraryBtn = document.querySelector('.header__nav-btn--lib');
-const movieContainerLibrary = document.querySelector(
-  '.library__container'
+const movieContainerLibrary = document.querySelector('.library__container');
   // '.card__container--library'
-);
+
+const trailerBtn= document.querySelector('.overlay--trailer');
 
 // movieContainer.addEventListener('click', openModalMovie);
 if (movieContainer) {
@@ -110,6 +110,7 @@ function openModalMovie(event) {
   const buttonQueueRefs = document.querySelector('.queue');
   buttonWatchedRefs.addEventListener('click', fWatched);
   buttonQueueRefs.addEventListener('click', fQueue);
+  trailerBtn.addEventListener('click',fetchTrailers);
 
   saveDataMovie = movieData;
 
@@ -202,21 +203,21 @@ function renderMovieDataToModal(
       <h2 class="modal__film-name">${title}</h2>
       <ul class="modal__film-info-list">
         <li class="modal__film-info-item">
-          <p class="madal__film-info">Vote / Votes</p>
+          <p class="modal__film-info">Vote / Votes</p>
           <p class="modal__film-info-value">
             <span class="modal__film-info-value--color">${vote_average}</span> / ${vote_count}
           </p>
         </li>
         <li class="modal__film-info-item">
-          <p class="madal__film-info">Popularity</p>
+          <p class="modal__film-info">Popularity</p>
           <p class="modal__film-info-value">${popularity}</p>
         </li>
         <li class="modal__film-info-item">
-          <p class="madal__film-info">Original Title</p>
+          <p class="modal__film-info">Original Title</p>
           <p class="modal__film-info-value">${original_title}</p>
         </li>
         <li class="modal__film-info-item">
-          <p class="madal__film-info">Genre</p>
+          <p class="modal__film-info">Genre</p>
           <p class="modal__film-info-value">${genresData}</p>
         </li>
       </ul>

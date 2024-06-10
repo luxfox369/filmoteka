@@ -17,6 +17,7 @@ export const refs = {
   libraryBtn: document.querySelector('.header__nav-btn--lib'),
   switch: document.querySelector('.switch'),
   label: document.querySelector('.switch-for'),
+  trailer:document.querySelector('.overlay--trailer'),
    
 };
 

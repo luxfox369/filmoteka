@@ -13,6 +13,6 @@ import './js/queue';
 // import './js/sliderMarkup';
 import './js/modalMovie';
 import './js/closeModal';
-// import './js/trailers';
+import './js/trailers';
 import './js/modal_button_storage';
 import './js/renderWatched';
