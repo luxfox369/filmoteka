@@ -15,7 +15,7 @@ const form = document.querySelector('.header__form');
 const input = form.querySelector(`input`);
 const container = refs.cardContainer;
 const sliderContainer =  document.querySelector('.top-slider__section');
-console.log('sliderContainer',sliderContainer);
+//console.log('sliderContainer',sliderContainer);
 form.addEventListener(`submit`, onSearch);
 
 function getQueryData(e) {
