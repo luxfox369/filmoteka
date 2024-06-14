@@ -163,7 +163,10 @@ function openModalMovie(e) {
     textButtonTrailer
   ) {
     console.log('genre_ids', genre_ids);
-    const genresData = getGenresNames(genre_ids);
+
+    let genresData = getGenresNames(genre_ids);
+    if (genresData.length === 0) genresData = '*******';
+
     console.log('genresData', genresData);
     refs.modal.innerHTML = `
     <div class="modal__poster-box">

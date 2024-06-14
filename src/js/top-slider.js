@@ -1,4 +1,4 @@
-import  {Swiper, EffectCoverflow } from "swiper";
+import  Swiper,{ EffectCoverflow } from "swiper";
 import '../../node_modules/swiper/swiper.scss';
 
 const topMovies = new Swiper('[data-swiper="top"]', {
@@ -47,6 +47,7 @@ const topMovies = new Swiper('[data-swiper="top"]', {
 
 const container = document.querySelector('.top-slider__section');
 const sliderImage = document.querySelector('.top-slider__wrapper');
+//console.log(sliderImage);
 
 window.addEventListener('scroll', () => {
   const scrollPosition = window.pageYOffset;
@@ -56,7 +57,7 @@ window.addEventListener('scroll', () => {
 
 
 sliderImage.addEventListener('wheel', function(e) {
-  //e.preventDefault();
+  e.preventDefault();
 
   if (e.deltaY < 0) {
     topMovies.slidePrev();

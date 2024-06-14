@@ -25,7 +25,7 @@ export function showWatched() {
   // renderLibraryCards(moviesWatched, refs.libraryContainer);
 }
 
-function renderLibraryCards(moviesWatched, ref) {
+/*function renderLibraryCards(moviesWatched, ref) {
   const cardMarkup = moviesWatched
     .map(
       ({ id, title, release_date, poster_path, genre_ids, first_air_date }) => {
@@ -57,4 +57,4 @@ function renderLibraryCards(moviesWatched, ref) {
   //  const LibaCont = document.querySelector('.library__container');
   ref.innerHTML = cardMarkup;
   return;
-}
+}*/

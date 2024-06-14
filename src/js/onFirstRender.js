@@ -11,7 +11,7 @@ import { getGenresNames } from './getGenresNames';
 
 const paginator = new Paginator();
 const loader = new Loader();
-const movieContainer = refs.cardContainer;
+const moviesContainer = refs.cardContainer;
 
 if (paginator.pagination) {
   paginator.pagination.addEventListener('click', onClickPagination);
@@ -36,7 +36,7 @@ async function getArrGenres() {
 async function render(page) {
   const { results } = await apiMovie.fetchAllMovie(page);
   storage.saveCurrentPage(results);
-  insertCardMarkup(results, movieContainer);
+  insertCardMarkup(results, moviesContainer);
   loader.disable();
 }
 
@@ -93,7 +93,7 @@ async function onLoad(e) {
       localStorage.setItem('queueArr', JSON.stringify([]));
     }*/
      
-    insertCardMarkup(results, movieContainer);
+    insertCardMarkup(results, moviesContainer);
     paginator.makeMarkup();
   } catch (error) {
     console.log(error);
