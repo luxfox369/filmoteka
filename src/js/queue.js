@@ -29,7 +29,7 @@ export function showQueue() {
   
 }
 
-function renderLibraryCards(moviesQueue, ref) {F
+/*function renderLibraryCards(moviesQueue, ref) {F
     const cardMarkup = moviesQueue
     .map(
       ({ id, title, release_date, poster_path, genre_ids, first_air_date }) => {
@@ -60,4 +60,4 @@ function renderLibraryCards(moviesQueue, ref) {F
   //  const LibaCont = document.querySelector('.library__container');
   ref.innerHTML = cardMarkup;
   return;
-}
+}*/
