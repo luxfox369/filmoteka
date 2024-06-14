@@ -1,6 +1,6 @@
 import { getGenresNames } from './getGenresNames';
-import { refs } from './refs';
-// const movieContainer = document.querySelector('.card__container');
+
+
 const movieContainer = document.querySelector('.home__container');
 
 const insertCardMarkup = (movies, container) => {

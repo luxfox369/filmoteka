@@ -1,4 +1,5 @@
-import { apiMovie } from './serviseAPI';
+import { apiMovie } from './api';
+import { refs } from './refs';
 import insertCardMarkup from './cardMarkup';
 import storage from './storage';
 import { Notify } from 'notiflix';
@@ -6,64 +7,61 @@ import Loader from './loader';
 import Paginator from './paginator';
 
 
-//export default LANG ="en-EN";
-
 const loader = new Loader();
-let userValue = '';
+const paginator = new Paginator();
+let searchValue = '';
+
 const form = document.querySelector('.header__form');
 const input = form.querySelector(`input`);
-const list = document.querySelector(`.home__container`);
-const slider = document.querySelector(`.top-slider__section`);
-const paginatorQuery = new Paginator();
-
+const container = refs.cardContainer;
+const sliderContainer =  document.querySelector('.top-slider__section');
+console.log('sliderContainer',sliderContainer);
 form.addEventListener(`submit`, onSearch);
 
 function getQueryData(e) {
-  console.log('here');
+ // console.log('here');
   
-  let nowPage = paginatorQuery.getNumber(e);
+  let nowPage = paginator.getNumber(e);
   if (nowPage) {
-    async function fetchByQueryFropmPag(value, page) {
+    async function fetchByQueryFromPag(value, page) {
       try {
         const res = await apiMovie.searchMovieByQuery(value, page);
         console.log(page);
 
-        if (res.results.length === 0) {
+        if (!res.results) {
           loader.disable();
           return Notify.failure(`Sorry, no movies were found for your search.`);
         }
         storage.saveCurrentPage(res.results);
         storage.savePage(page);
-        insertCardMarkup(res.results, list);
+        sliderContainer.style.display = "none";
+        insertCardMarkup(res.results, container);
         ifPosterOfMovieIsNotFound();
 
         loader.disable();
-        paginatorQuery.makeMarkup();
+        paginator.makeMarkup();
       } catch (error) {
         console.log(error);
       }
     }
 
-    fetchByQueryFropmPag(userValue, paginatorQuery.currentPage);
+    fetchByQueryFromPag(searchValue, paginator.currentPage);
   }
 }
 
 function onSearch(e) {
   e.preventDefault();
-  
- 
-  userValue = e.currentTarget.elements.searchQuery.value.trim();
-
-  if (userValue === '') {
+  searchValue = e.currentTarget.elements.searchQuery.value.trim();
+ if (!searchValue ) {
     return Notify.info(`The input field cannot be empty!`);
     return;
   }
 
   loader.enable();
 
-  fetchByQuery(userValue, 1);
+  fetchByQuery(searchValue, 1);
 
-  paginatorQuery.pagination.addEventListener('click', getQueryData);
+  paginator.pagination.addEventListener('click', getQueryData);
 
   input.addEventListener('change', e => {
     console.log(e.target.value);
@@ -78,26 +76,27 @@ async function fetchByQuery(value, page) {
   try {
     const res = await apiMovie.searchMovieByQuery(value, page);
 
-    if (res.results.length === 0) {
+    if (!res.results) {
       loader.disable();
       return Notify.failure(`Sorry, no movies were found for your search.`);
     }
 
-    paginatorQuery.totalPages = res.total_pages;
-    storage.saveCurrentPage(res.results);
+    paginator.totalPages = res.total_pages;
     storage.savePage(page);
+    storage.saveCurrentPage(res.results);
+    console.log('res.results', res.results);
+    sliderContainer.style.display = "none";
+   // slider.style.display = `none`;
 
-    slider.style.display = `none`;
-
-    insertCardMarkup(res.results, list);
+    insertCardMarkup(res.results, container);
     ifPosterOfMovieIsNotFound();
 
     loader.disable();
-    paginatorQuery.pagination.innerHTML = '';
+    paginator.pagination.innerHTML = '';
 
-    paginatorQuery.makeMarkup();
+    paginator.makeMarkup();
   } catch (error) {
-    
+    console.log(error);
   }
 }
 

@@ -4,7 +4,8 @@ import { refs } from './refs';
 const btn = refs.btnThumb;
 
 export function scrollFunction() {
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault;
     window.scrollTo({ top: 1000, behavior: 'smooth' });
   });
   if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {

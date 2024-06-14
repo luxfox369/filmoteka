@@ -43,7 +43,7 @@ export default class Paginator {
 
     this.pages.forEach(page => {
       if (page === this.currentPage) {
-        markup += `<li class="current">${page}</li>`;
+        markup += `<li class="currentPag">${page}</li>`;
       } else {
         markup += `<li>${page}</li>`;
       }
@@ -84,7 +84,7 @@ export default class Paginator {
       this.previousPage = this.currentPage;
       this.currentPage -= 1;
       this.makeMarkup();
-      return this.currnetPage;
+      return this.currentPage;
     }
 
     return null;

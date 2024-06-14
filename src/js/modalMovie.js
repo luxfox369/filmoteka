@@ -1,201 +1,171 @@
-export { buttonWatchedRefs, buttonQueueRefs, fWatched, fQueue };
-import { fetchTrailers } from "./trailers";
-// import { insertCardMarkup } from './cardMarkup';
-// import ApiMovie from './serviseAPI';
-// import { apiMovie } from './serviseAPI';
+import { apiMovie } from './api';
+import { refs } from './refs';
 import storage from './storage';
-// import cardMarkup from './cardMarkup';
-// import onFirstRender from './onFirstRender';
 import { getGenresNames } from './getGenresNames';
 import imagePlaceholder from '../images/image-placeholder.png';
-// import {
-//   isWatched,
-//   isQueue,
-//   fWatched,
-//   fQueue,
-//   addToWatched,
-//   removeFromWatched,
-// } from './modal_button_storage';
-import { refs } from './refs';
 
-// const filmCardRefs = document.querySelector('.card__container');
-const modalRefs = document.querySelector('.modal');
-const overlayRefs = document.querySelector('.overlay');
-const overlay = document.querySelector('.overlay');
-const modal = document.querySelector('.modal');
-const watchedBtnAdd = document.querySelector('.library__nav-btn--watched');
-const queueBtnAdd = document.querySelector('.library__nav-btn----queue');
-// const movieContainer = document.querySelector('.card__container');
-const movieContainer = document.querySelector('.home__container');
-// libraryBtn = document.querySelector('.header__nav-btn--lib');
-const movieContainerLibrary = document.querySelector('.library__container');
-  // '.card__container--library'
+//import fetchTrailer   from './trailers';
 
-const trailerBtn= document.querySelector('.overlay--trailer');
 
-// movieContainer.addEventListener('click', openModalMovie);
-if (movieContainer) {
-  movieContainer.addEventListener('click', openModalMovie);
+ const containerHome = document.querySelector('.home__container'); // 
+ const containerLibrary  = document.querySelector('.library__container');//  
+ const modalTrailer = document.querySelector('.overlay--trailer');
+ let modalTrailerBtn ='';
+
+if (containerHome) {
+  containerHome.addEventListener('click', openModalMovie);
 }
-
-if (movieContainerLibrary) {
-  movieContainerLibrary.addEventListener('click', openModalMovie);
+if (containerLibrary ) {
+  containerLibrary .addEventListener('click', openModalMovie);
 }
-
-// filmCardRefs.addEventListener('click', openModalMovie);
-// console.log(filmCardRefs);
 const addWatched = 'ADD TO WATCHED';
 const removeWatched = 'REMOVE FROM WATCHED';
 const addQueue = 'ADD TO QUEUE';
 const removeQueue = 'REMOVE FROM QUEUE';
-const buttonWatchedRefs = document.querySelector('.watched');
-const buttonQueueRefs = document.querySelector('.queue');
 
-// export function closeButtonRemoveListener() {
-//   buttonWatchedRefs.removeEventListener('click', fWatched);
-//   buttonQueueRefs.removeEventListener('click', fQueue);
-// }
+let saveDataMovie ;
+let textButtonTrailer = 'WATCH TRAILER';
+let moviesWatched, moviesQueue;
 
-let saveDataMovie = {};
-
-function openModalMovie(event) {
-  event.preventDefault();
+function openModalMovie(e) {
+  e.preventDefault();
   let movies = [];
 
   openModalView();
   //якщо home берем фільми з ключа  current
-  movies = storage.loadCurrentPage();
+   movies = storage.loadCurrentPage();
   //якщо library+watched берем з ключа watched
-  if (refs.watchedBtn && refs.watchedBtn.classList.contains('active')) {
-   movies = storage.loadFromWatched();
-    
+  if (refs.libWatchedBtn && refs.libWatchedBtn.classList.contains('active')) {
+    movies = storage.loadFromWatched();
   }
   //якщо library+queue берем з ключа queue
-  if (refs.queueBtn && refs.queueBtn.classList.contains('active')) {
+  if (refs.libQueueBtn && refs.libQueueBtn.classList.contains('active')) {
     movies = storage.loadFromQueue();
   }
-  const movieData = movies.find(
-    movie => movie.id === Number(event.target.closest('.film_card').id)
+  
+  const movieData = movies.find(movie => movie.id === Number(e.target.closest('.film_card').id)
   );
-    let parsedMovies = storage.loadFromWatched();
-
+  console.log('movieData from film_card', movieData);
+  
   let textButtonWatched = '';
   let textButtonQueue = '';
-  function isWatched(movieData, parsedMovies) {
-    if (parsedMovies.findIndex(movie => movie.id === movieData.id) < 0) {
-      textButtonWatched = addWatched;
-      return textButtonWatched;
+  //====WATCHED=====
+  //Виясняємо що має бути на кнопці WATCHED
+  let moviesInWatched = storage.loadFromWatched();
+  isWatched(movieData, moviesInWatched); //дивимось чи він є в масиві з локалСторедж
+
+  function isWatched(movieData, moviesInWatched) {
+    if (moviesInWatched.findIndex(movie => movie.id === movieData.id) < 0) {
+      return textButtonWatched = addWatched;
     } else {
       return (textButtonWatched = removeWatched);
     }
   }
   // ==== QUEUE ====
-
-  let parsedMoviesQery = storage.loadFromQueue();
-   function isQueue(movieData, parsedMoviesQery) {
-    if (parsedMoviesQery.findIndex(movie => movie.id === movieData.id) < 0) {
-      textButtonQueue = addQueue;
-      return textButtonQueue;
+  //Виясняємо що має бути на кнопці QUEUE 
+  let moviesInQuery = storage.loadFromQueue();
+  isQueue(movieData, moviesInQuery);
+  
+  function isQueue(movieData, moviesInQuery) {
+    if (moviesInQuery.findIndex(movie => movie.id === movieData.id) < 0) {
+      return textButtonQueue = addQueue;
     } else {
       return (textButtonQueue = removeQueue);
     }
   }
-  // ====
+  // ====рендеримо дані про фільм
 
-  isWatched(movieData, parsedMovies);
-  isQueue(movieData, parsedMoviesQery);
-
-  renderMovieDataToModal(movieData, textButtonWatched, textButtonQueue);
-  const buttonWatchedRefs = document.querySelector('.watched');
-  const buttonQueueRefs = document.querySelector('.queue');
-  buttonWatchedRefs.addEventListener('click', fWatched);
-  buttonQueueRefs.addEventListener('click', fQueue);
-  trailerBtn.addEventListener('click',fetchTrailers);
-
-  saveDataMovie = movieData;
-
-  function fWatched(event) {
-    if (event.target.textContent === 'ADD TO WATCHED') {
-      let addToWatchedData = storage.loadFromWatched();
-      addToWatchedData.push(movieData);
-      storage.saveToWatched(addToWatchedData);
-      event.target.textContent = 'REMOVE FROM WATCHED';
+  renderMovieDataToModal(movieData, textButtonWatched, textButtonQueue, textButtonTrailer);
+  //знаходимо кнопки в модалці
+  const buttonWatched = document.querySelector('.watched');
+  const buttonQueue = document.querySelector('.queue');
+  modalTrailerBtn = document.querySelector('.trailer-btn');
+    
+  //призначаємо дії кнопок в модалці
+  buttonWatched.addEventListener('click', fWatched); //libWatchedBtn
+  buttonQueue.addEventListener('click', fQueue);     //libQueueBtn
+  modalTrailerBtn.addEventListener('click',  fetchTrailer );
+  
+  //saveDataMovie = movieData;
+ 
+  //зміна localStorage при натисненні ADD/REMOVE WATCHED
+  function fWatched(e) {
+    moviesWatched = storage.loadFromWatched();
+    
+    if (e.target.textContent === 'ADD TO WATCHED') {
+      moviesWatched.push(movieData);       // додає в масив
+      e.target.textContent = 'REMOVE FROM WATCHED';
+             
     } else {
-      let removeWatchedData = storage.loadFromWatched();
-      removeWatchedData = removeWatchedData.filter(
+      moviesWatched = moviesWatched.filter(
         ({ id }) => id !== movieData.id
-      );
-      storage.saveToWatched(removeWatchedData);
-      event.target.textContent = 'ADD TO WATCHED';
-
-      if (
-        refs.libraryBtn.classList.contains('current') &&
-        refs.watchedBtn.classList.contains('active')
-      ) {
-        let parsedMovies = storage.loadFromWatched();
-        if (parsedMovies.length < 1) {
-          refs.libraryContainer.innerHTML = '';
-        }
-        renderLibraryCards(parsedMovies, refs.libraryContainer);
-        return;
-      }
+      );                                     // видаляє  з масиву
+      e.target.textContent = 'ADD TO WATCHED';
     }
-  }
-  // ==== Queue function ====
-  function fQueue(event) {
-    if (event.target.textContent === 'ADD TO QUEUE') {
-      let addToQueueData = storage.loadFromQueue();
-      addToQueueData.push(movieData);
-      storage.saveToQueue(addToQueueData);
-      event.target.textContent = 'REMOVE FROM QUEUE';
-    } else {
-      let removeQueueData = storage.loadFromQueue();
-      removeQueueData = removeQueueData.filter(({ id }) => id !== movieData.id);
-      storage.saveToQueue(removeQueueData);
-      event.target.textContent = 'ADD TO QUEUE';
-      // console.log(libraryBtn.classList.contains('current'));
-      // const container = document.querySelector('#container'); // выберите контейнер
-
-      if (
-        refs.libraryBtn.classList.contains('current') ||
-        refs.queueBtn.classList.contains('active')
-      ) {
-       
-        const parsedMoviesQery = storage.loadFromQueue();
-        console.log(parsedMoviesQery.length);
-        if (parsedMoviesQery.length < 1) {
-          refs.libraryContainer.innerHTML = '';
-        }
-        renderLibraryCards(parsedMoviesQery, refs.libraryContainer);
-        return;
-      }
+    storage.saveToWatched(moviesWatched); //записує зміни в локалСторедж
+    /* if (
+       refs.libraryBtn.classList.contains('current') &&
+        buttonWatched.classList.contains('active')
+     ) {
+       moviesWatched = storage.loadFromWatched();*/
+    if (moviesWatched.length < 1) {
+      refs.libraryContainer.innerHTML = '';
     }
-  }
-}
+    //renderLibraryCards(moviesWatched, refs.libraryContainer);
+    //insertCardMarkup(moviesWatched, refs.libraryContainer);
+    return;
+  } //кінець
+    
+  
+  //зміна localStorage при натисненні ADD/REMOVE QUEUE
+  function fQueue(e) {
+    moviesQueue = storage.loadFromQueue();
+    
+    if (e.target.textContent === 'ADD TO QUEUE') {
+      moviesQueue.push(movieData);
+      e.target.textContent = 'REMOVE FROM QUEUE';
+    }
+    else {
+      moviesQueue = moviesQueue.filter(({ id }) => id !== movieData.id);
+      e.target.textContent = 'ADD TO QUEUE';
+    }
+    storage.saveToQueue(moviesQueue);
+    /* if (
+       refs.libraryBtn.classList.contains('current') ||
+       refs.buttonQueue.classList.contains('active')
+     ) {
+        moviesQueue = storage.loadFromQueue();*/
+    if (moviesQueue.length < 1) {
+      refs.libraryContainer.innerHTML = '';
+    }
+    //insertCardMarkup = (moviesQueue, refs.libraryContainer)
+    //renderLibraryCards(moviesQueue, refs.libraryContainer);
+    return;
+    //}
+    
+  } //кінець fQueue
 
-export default saveDataMovie;
-
-function renderMovieDataToModal(
-  {
-    poster_path,
-    title,
-    vote_average,
-    vote_count,
-    popularity,
-    original_title,
-    genre_ids,
-    overview,
-  },
-  textButtonWatched,
-  textButtonQueue
-) {
-  const genresData = getGenresNames(genre_ids);
-  modalRefs.innerHTML = `
+  function renderMovieDataToModal(
+    {
+      poster_path,
+      title,
+      vote_average,
+      vote_count,
+      popularity,
+      original_title,
+      genre_ids,
+      overview,
+    },
+    textButtonWatched,
+    textButtonQueue,
+    textButtonTrailer
+  ) {
+    const genresData = getGenresNames(genre_ids);
+    refs.modal.innerHTML = `
     <div class="modal__poster-box">
-      <img class="modal__poster" src="${
-        poster_path
-          ? `https://image.tmdb.org/t/p/w500${poster_path}`
-          : imagePlaceholder
+      <img class="modal__poster" src="${poster_path
+        ? `https://image.tmdb.org/t/p/w500${poster_path}`
+        : imagePlaceholder
       }" alt="${title}"  />
 
     </div>
@@ -221,10 +191,13 @@ function renderMovieDataToModal(
           <p class="modal__film-info-value">${genresData}</p>
         </li>
       </ul>
-      <h3 class="modal__film-about">ABOUT</h3>
+      <h3 class="modal__film-about">About...</h3>
       <p class="modal__film-plot">${overview}
       </p>
       <ul class="modal__film-btn-List">
+      <li class="modal__film-btn-item">
+          <button type="button" class="modal__film-btn trailer-btn">${textButtonTrailer}</button>
+        </li>
         <li class="modal__film-btn-item">
           <button type="button" class="modal__film-btn watched">${textButtonWatched}</button>
         </li>
@@ -242,83 +215,67 @@ function renderMovieDataToModal(
     </div>
 
   `;
+  }
+
+  function openModalView() {
+    refs.modal.classList.add('active');
+    refs.overLay.classList.add('active');
+  
+  }
+
+  async function fetchTrailer(e) { //
+   try {
+     const video = await apiMovie.fetchTrailerById(movieData.id);
+     modalTrailer.innerHTML = `
+   <iframe
+     class="iframe"
+     width="560"
+     height="315"
+     src="https://www.youtube.com/embed/${video.results[0].key}?rel=0&showinfo=0&autoplay=1"
+     title="YouTube video player"
+     frameborder="0"
+     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+     allowfullscreen
+   ></iframe>`;
+       
+   }
+    
+   catch {
+     console.log(error.message);
+   }
+   finally {
+     if (e.target === modalTrailerBtn)
+       modalTrailer.classList.add('active');
+     else {
+       modalTrailer.classList.remove('active');
+       modalTrailer.innerHTML = '';
+     }
+   }
+ 
+  
+ }
+ window.addEventListener('keydown', e => {
+   if (modalTrailer.classList.contains('active')) {
+     function handleKeyDown(e) {
+       if (e.code === 'Escape') {
+         modalTrailer.classList.remove('active');
+         modalTrailer.innerHTML = '';
+       }
+     }
+     handleKeyDown(e);
+   }
+ });
+
+ modalTrailer.addEventListener('click', e => {
+   function handleClickTrailer(e) {
+     if (e.currentTarget === e.target) {
+       modalTrailer.classList.remove('active');
+       modalTrailer.innerHTML = '';
+     }
+   }
+   handleClickTrailer(e);
+ });
 }
+  
 
-function openModalView() {
-  modalRefs.classList.add('active');
-  overlayRefs.classList.add('active');
-  // window.addEventListener('scroll', e => {
-  //   window.scrollTo(0, 0);
-  // });
-}
-
-function renderLibraryCards(parsedMoviesQery, ref) {
-  const cardMarkup = parsedMoviesQery
-    .map(
-      ({ id, title, release_date, poster_path, genre_ids, first_air_date }) => {
-        const getGenreNames = getGenresNames(genre_ids);
-        const movieData = {
-          release_date,
-          first_air_date,
-        };
-        let releaseDate = '';
-        if (movieData.release_date) {
-          releaseDate = movieData.release_date.slice(0, 4);
-        } else if (movieData.first_air_date) {
-          releaseDate = movieData.first_air_date.slice(0, 4);
-        }
-        return `
-        <li id=${id} class=film_card>
-        <div class=img__wrapper><img class=film_poster src=https://image.tmdb.org/t/p/original${poster_path} width= 50 height= 50 alt= ${title}/></div>
-        <div class="film_info">
-        <p class=film_name>${title}</p>
-        <p class=film_genre>${getGenreNames} <span class=line>|<span> ${releaseDate}</p>
-                </div>
-
-        </li>`;
-      }
-    )
-    .join('');
-  //  const LibaCont = document.querySelector('.library__container');
-  ref.innerHTML = cardMarkup;
-  return;
-}
-// Експорт данних по фільмам для обміну між local storage звернення: modalMovie.movies()
-// export {
-//   movies, // масив фільмів за ключем 'current' що приходять з local storage з load
-//   movieData, // дані поточного фільма який обрали
-// };
-
-// 1. Відкриття модалки по натисканню на movie card
-// 2. Fetch
-// 3. Render
-// 4. Підключення buttons 'add to watch' та 'add to queue'
-// 5. При натисканні на buttons 'add to watch', має бути змінено
-// текстовий контент на 'remove to watch'
-// 6. При закритті/відкритті модалки має відображатись поточний стан кнопки add/remove
-// 7. При закритті модалки необхідно перемальовувати вміст бібліотеки
-
-// ============ функціонал для buttons ==========
-
-// function onButtonAddWatched() {
-//   buttonWatchedRefs.classList.toggle('to-turn-on');
-//   buttonWatchedRefs.textContent = 'ADD TO';
-//   buttonWatchedRefs.classList.toggle('to-turn-on');
-//   buttonWatchedRefs.textContent = 'REMOVE FROM WATCHED';
-// }
-
-// function onButtonAddQueue() {
-//   buttonQueueRefs.classList.remove('to-turn-on');
-//   buttonQueueRefs.textContent = 'ADD TO';
-//   buttonQueueRefs.classList.add('to-turn-on');
-//   buttonQueueRefs.textContent = 'REMOVE FROM QUEUE';
-// }
-
-// const buttonWatchedRefs = document.querySelector('.modal__film-btn watched');
-// const buttonQueueRefs = document.querySelector('.modal__film-btn queue');
-
-// buttonWatchedRefs = document.querySelector('.modal__film-btn watched');
-// buttonQueueRefs = document.querySelector('.modal__film-btn queue');
-// buttonWatchedRefs.addEventListener('click', onButtonAddWatched);
-// console.log(buttonWatchedRefs);
-// buttonQueueRefs.addEventListener('click', onButtonAddQueue);
+export {  movieData, moviesQueue, moviesWatched };

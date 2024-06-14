@@ -114,7 +114,7 @@
   margin-top: 6px;
   width: 27px;
   height: 27px;
-  background-color: blue;
+  background-color: rgb(252, 131, 94);
   color: #fff;
   border-radius: 50%;
   position: absolute;
@@ -135,7 +135,6 @@
 }
 .header__nav-btn {
   display: block;
-  background: $light-bg-color;
   border-radius: 100px;
   font-family: $primary-font;
   font-weight: 500;
@@ -145,13 +144,14 @@
   align-items: center;
   text-align: center;
   text-transform: uppercase;
-  color: $primary-font-color;
+  background: $light-bg-color;
+  color: $accent-color; //чорний
   transition: color 250ms linear, background-color 250ms linear;
 
   &:hover,
   &:focus {
     color: $light-font-color;
-    background-color: $dark-bg-color;
+    //background-color: $accent-color;
   }
 
   &--home {
@@ -174,6 +174,10 @@
       padding: 14px 24px;
     }
   }
+}
+.current {
+  color: $light-font-color;
+  background-color: $accent-color;
 }
 
 .header__form {
@@ -272,11 +276,6 @@
     font-size: 64px;
     line-height: 1.17;
   }
-}
-
-.current {
-  color: $light-font-color;
-  background-color: $dark-bg-color;
 }
 
 // slider styles

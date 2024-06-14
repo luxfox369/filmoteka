@@ -1,34 +1,32 @@
 import { refs } from './refs';
 import storage from './storage';
 import { getGenresNames } from './getGenresNames';
-import insertCardMarkup from './cardMarkup';
 import Notiflix from 'notiflix';
+import insertCardMarkup  from './cardMarkup';
 
-// const watchedBtn = document.querySelector('.library__nav-btn--watched');
-// const gallery = document.querySelector('.card__container--library');
-// const watchedBtn = refs.watchedBtn;
-// const gallery = refs.libraryContainer;
-const movies = storage.loadFromWatched();
+if (refs.libWatchedBtn) {
+  refs.libWatchedBtn.addEventListener('click', showWatched);
+}
+export function showWatched() {
+   const moviesWatched = storage.loadFromWatched() || [];
+  refs.libWatchedBtn.classList.add('active');
+  refs.libQueueBtn.classList.remove('active');
+     
+  if (!moviesWatched || !moviesWatched.length) {
+    Notiflix.Notify.info('Oops watched is empty!');
+    refs.libraryContainer.innerHTML = '';
+    return;
+  } else
+  return   insertCardMarkup(moviesWatched, refs.libraryContainer);
+  //if (moviesWatched.length < 1) {
+  //  refs.libraryContainer.innerHTML = '';
+  //}
 
-if (refs.watchedBtn) {
-  refs.watchedBtn.addEventListener('click', showWatched);
+  // renderLibraryCards(moviesWatched, refs.libraryContainer);
 }
 
-function showWatched() {
-  if (!movies || movies.length === 0) {
-    Notiflix.Notify.failure('Watched, empty!');
-  } else {
-    refs.queueBtn.classList.remove('active');
-    refs.watchedBtn.classList.add('active');
-    // const moviesArr = window.localStorage.getItem('wathedArr');
-    // let parsedMovies = JSON.parse(moviesArr);
-    let parsedMovies = storage.loadFromWatched();
-    renderLibraryCards(parsedMovies, refs.libraryContainer);
-  }
-}
-
-function renderLibraryCards(parsedMoviesQery, ref) {
-  const cardMarkup = parsedMoviesQery
+function renderLibraryCards(moviesWatched, ref) {
+  const cardMarkup = moviesWatched
     .map(
       ({ id, title, release_date, poster_path, genre_ids, first_air_date }) => {
         const getGenreNames = getGenresNames(genre_ids);
@@ -47,6 +45,7 @@ function renderLibraryCards(parsedMoviesQery, ref) {
         <div class=img__wrapper><img class=film_poster src=https://image.tmdb.org/t/p/original${poster_path} width= 50 height= 50 alt= ${title}/></div>
         <div class="film_info">
         <p class=film_name>${title}</p>
+        <div class="overlay--trailer" ><button class= "library__nav-btn">Watch trailer</button></div> 
         <p class=film_genre>${getGenreNames} <span class=line>|<span> ${releaseDate}</p>
                 </div>
 
@@ -54,6 +53,7 @@ function renderLibraryCards(parsedMoviesQery, ref) {
       }
     )
     .join('');
+  //alert("from Watched.js");
   //  const LibaCont = document.querySelector('.library__container');
   ref.innerHTML = cardMarkup;
   return;

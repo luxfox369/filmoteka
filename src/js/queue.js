@@ -1,40 +1,36 @@
 import { refs } from './refs';
 import storage from './storage';
 import { getGenresNames } from './getGenresNames';
-import insertCardMarkup from './cardMarkup';
 import Notiflix from 'notiflix';
+import insertCardMarkup from './cardMarkup'
 
-// const gallery = refs.libraryContainer;
-const queue = storage.loadFromQueue() || [];
 
-if (refs.queueBtn) {
-  refs.queueBtn.addEventListener('click', showQueue);
+//console.log('moviesQueue', moviesQueue);
+if (refs.libQueueBtn) {
+  refs.libQueueBtn.addEventListener('click', showQueue);
 }
-
 export function showQueue() {
-  if (!queue || !queue.length) {
-    Notiflix.Notify.failure('Oops, empty!');
+  refs.libQueueBtn.classList.add('active');
+  refs.libWatchedBtn.classList.remove('active');
+ const moviesQueue = storage.loadFromQueue() || [];
+  
+  if (!moviesQueue || !moviesQueue.length) {
+    Notiflix.Notify.info('Oops queue is empty!');
+    refs.libraryContainer.innerHTML = '';
     return;
-  } else {
-    refs.queueBtn.classList.add('active');
-    refs.watchedBtn.classList.remove('active');
-    // console.log(refs.queueBtn);
-    // console.log(refs.libraryBtn);
-    // insertCardMarkup(queue, gallery);
-    //const queuryArr = window.localStorage.getItem('queueArr');
-    // console.log(queuryArr);
-    //let parsedMoviesQery = JSON.parse(queuryArr);
-    let parsedMoviesQery = storage.loadFromQueue();
-    if (parsedMoviesQery.length < 1) {
-      refs.libraryContainer.innerHTML = '';
-    }
-    renderLibraryCards(parsedMoviesQery, refs.libraryContainer);
-    // console.log();
-  }
+  } else
+    return insertCardMarkup(moviesQueue, refs.libraryContainer)
+    
+    //if (moviesQueue.length < 1) {
+    //  refs.libraryContainer.innerHTML = '';
+    //}
+    
+     //renderLibraryCards(moviesQueue, refs.libraryContainer);
+  
 }
 
-function renderLibraryCards(parsedMoviesQery, ref) {
-  const cardMarkup = parsedMoviesQery
+function renderLibraryCards(moviesQueue, ref) {F
+    const cardMarkup = moviesQueue
     .map(
       ({ id, title, release_date, poster_path, genre_ids, first_air_date }) => {
         const getGenreNames = getGenresNames(genre_ids);
@@ -53,6 +49,7 @@ function renderLibraryCards(parsedMoviesQery, ref) {
         <div class=img__wrapper><img class=film_poster src=https://image.tmdb.org/t/p/original${poster_path} width= 50 height= 50 alt= ${title}/></div>
         <div class="film_info">
         <p class=film_name>${title}</p>
+        <div class="overlay--trailer" ><button class= "library__nav-btn">Watch trailer</button></div> 
         <p class=film_genre>${getGenreNames} <span class=line>|<span> ${releaseDate}</p>
                 </div>
 

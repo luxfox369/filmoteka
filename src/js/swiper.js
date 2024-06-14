@@ -1,4 +1,4 @@
-import Swiper, { Keyboard, Autoplay } from 'swiper';
+import Swiper, { Keyboard, Autoplay } from "swiper";
 import '../../node_modules/swiper/swiper.scss';
 
 const swiper = new Swiper('[data-swiper="gallery"]', {
