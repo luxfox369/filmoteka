@@ -1,6 +1,6 @@
 import { getGenresNames } from './getGenresNames';
-import { refs } from './refs';
-// const movieContainer = document.querySelector('.card__container');
+
+
 const movieContainer = document.querySelector('.home__container');
 
 const insertCardMarkup = (movies, container) => {
@@ -23,6 +23,7 @@ const insertCardMarkup = (movies, container) => {
     <div class=img__wrapper><img class=film_poster src=https://image.tmdb.org/t/p/original${poster_path} width= 50 height= 50 alt= ${title}/></div>
     <div class="film_info">
     <p class=film_name>${title}</p>
+    <div class="overlay--trailer" ><button class= "library__nav-btn">Watch trailer</button></div> 
     <p class=film_genre>${getGenreNames} <span class=line>|<span> ${releaseDate}</p>
             </div>
    
