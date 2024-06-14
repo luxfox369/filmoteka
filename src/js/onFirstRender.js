@@ -24,10 +24,10 @@ export function onClickPagination(e) {
 async function getArrGenres() {
     try {
       const { genres } = await apiMovie.fetchGenres();
-      /*const genresToSave = genres.reduce((acc, { id, name }) => {
+      const genresToSave = genres.reduce((acc, { id, name }) => {
         acc[id] = name;
         return acc;
-      }, {});*/
+      }, {});
       // window.localStorage.setItem('genres', JSON.stringify(genresToSave));
       storage.saveGenres(genres);
     } catch (error) { }

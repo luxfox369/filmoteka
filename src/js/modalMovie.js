@@ -155,12 +155,19 @@ function openModalMovie(e) {
       original_title,
       genre_ids,
       overview,
+      release_date,
+
     },
     textButtonWatched,
     textButtonQueue,
     textButtonTrailer
   ) {
-    const genresData = getGenresNames(genre_ids);
+    console.log('genre_ids', genre_ids);
+
+    let genresData = getGenresNames(genre_ids);
+    if (genresData.length === 0) genresData = '*******';
+
+    console.log('genresData', genresData);
     refs.modal.innerHTML = `
     <div class="modal__poster-box">
       <img class="modal__poster" src="${poster_path
@@ -187,10 +194,14 @@ function openModalMovie(e) {
           <p class="modal__film-info-value">${original_title}</p>
         </li>
         <li class="modal__film-info-item">
+          <p class="modal__film-info">Release_date</p>
+          <p class="modal__film-info-value">${release_date}</p>
+        </li> 
+        <li class="modal__film-info-item">
           <p class="modal__film-info">Genre</p>
           <p class="modal__film-info-value">${genresData}</p>
-        </li>
-      </ul>
+        </li> 
+       </ul>
       <h3 class="modal__film-about">About...</h3>
       <p class="modal__film-plot">${overview}
       </p>

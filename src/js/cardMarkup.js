@@ -7,7 +7,8 @@ const insertCardMarkup = (movies, container) => {
   const cardMarkup = movies
     .map(
       ({ id, title, release_date, poster_path, genre_ids, first_air_date }) => {
-        const getGenreNames = getGenresNames(genre_ids);
+        const genreNames = getGenresNames(genre_ids);
+        console.log('')
         const movieData = {
           release_date,
           first_air_date,
@@ -24,7 +25,7 @@ const insertCardMarkup = (movies, container) => {
     <div class="film_info">
     <p class=film_name>${title}</p>
     <div class="overlay--trailer" ><button class= "library__nav-btn">Watch trailer</button></div> 
-    <p class=film_genre>${getGenreNames} <span class=line>|<span> ${releaseDate}</p>
+    <p class=film_genre>${genreNames} <span class=line>|<span> ${releaseDate}</p>
             </div>
    
     </li>`;

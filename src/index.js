@@ -9,7 +9,6 @@ import './js/paginator';
 import './js/btnUp';
 import './js/searchQuery';
 import './js/top-slider';
-
 import './js/modalMovie';
 import './js/modal_footer';
 import './js/closeModal';
