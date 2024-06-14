@@ -1,4 +1,4 @@
-import  {Swiper, EffectCoverflow } from "swiper";
+import  Swiper,{ EffectCoverflow } from "swiper";
 import '../../node_modules/swiper/swiper.scss';
 
 const topMovies = new Swiper('[data-swiper="top"]', {
