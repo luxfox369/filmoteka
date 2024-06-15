@@ -165,7 +165,7 @@ function openModalMovie(e) {
     console.log('genre_ids', genre_ids);
 
     let genresData = getGenresNames(genre_ids);
-    if (genresData.length === 0) genresData = '*******';
+    if (genresData.length <1) genresData = '*******';
 
     console.log('genresData', genresData);
     refs.modal.innerHTML = `

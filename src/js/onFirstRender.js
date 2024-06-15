@@ -12,6 +12,7 @@ import { getGenresNames } from './getGenresNames';
 const paginator = new Paginator();
 const loader = new Loader();
 const moviesContainer = refs.cardContainer;
+export let allGenres =[];
 
 if (paginator.pagination) {
   paginator.pagination.addEventListener('click', onClickPagination);
@@ -24,12 +25,13 @@ export function onClickPagination(e) {
 async function getArrGenres() {
     try {
       const { genres } = await apiMovie.fetchGenres();
-      const genresToSave = genres.reduce((acc, { id, name }) => {
-        acc[id] = name;
-        return acc;
-      }, {});
+     // const genresToSave = genres.reduce((acc, { id, name }) => {
+    //    acc[id] = name;
+    //    return acc;
+    //  }, {});
       // window.localStorage.setItem('genres', JSON.stringify(genresToSave));
       storage.saveGenres(genres);
+      allGenres = storage.loadGenres();
     } catch (error) { }
   }
 
@@ -62,7 +64,9 @@ function  onChecked(e) {
 //************************* */
 async function onLoad(e) {
   e.preventDefault();
-  if (!storage.loadGenres()) getArrGenres();
+  //if (storage.loadGenres().length < 1)
+    getArrGenres();
+  
   //якщо library затягаємо queue
    if (refs.libraryBtn.classList.contains('current')) {
      const queueMovies = storage.loadFromQueue();
@@ -99,3 +103,4 @@ async function onLoad(e) {
     console.log(error);
   }
 }
+
