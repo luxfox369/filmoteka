@@ -56,7 +56,7 @@ window.addEventListener('scroll', () => {
 });
 
 
-sliderImage.addEventListener('wheel', function(e) {
+sliderImage.addEventListener('wheel', (e)=> {
   e.preventDefault();
 
   if (e.deltaY < 0) {

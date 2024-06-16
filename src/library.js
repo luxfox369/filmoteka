@@ -2,6 +2,7 @@ import './js/swiper';
 import './js/closeModal';
 import './js/loader';
 import './js/storage';
+//import './js/language';
 import './js/api';
 import './js/onFirstRender';
 import './js/paginator';

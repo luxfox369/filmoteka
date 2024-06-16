@@ -1,3 +1,4 @@
+
 export let LANG = "en-EN";
 import{ scrollFunction} from './btnUp'
 import { apiMovie } from './api';
@@ -53,17 +54,19 @@ if (refs.switch) {
 function  onChecked(e) {
   let element = e.currentTarget;
   if (element.checked) {
-    LANG = "ru-RU";
-   getArrGenres();
+    LANG = "uk-UA";
+    getArrGenres();
+    onLoad('load');
    
   }
   else LANG = "en-EN";
   getArrGenres();
+  onLoad('load');
   
 }
 //************************* */
 async function onLoad(e) {
-  e.preventDefault();
+  //e.preventDefault();
   //if (storage.loadGenres().length < 1)
     getArrGenres();
   
@@ -103,4 +106,3 @@ async function onLoad(e) {
     console.log(error);
   }
 }
-

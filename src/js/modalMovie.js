@@ -3,6 +3,8 @@ import { refs } from './refs';
 import storage from './storage';
 import { getGenresNames } from './getGenresNames';
 import imagePlaceholder from '../images/image-placeholder.png';
+import { LANG } from './onFirstRender';
+import Notiflix from 'notiflix';
 
 //import fetchTrailer   from './trailers';
 
@@ -165,7 +167,10 @@ function openModalMovie(e) {
     console.log('genre_ids', genre_ids);
 
     let genresData = getGenresNames(genre_ids);
-    if (genresData.length <1) genresData = '*******';
+   // console.log(LANG);
+    if (genresData.length <1 && LANG==='"en-EN"') genresData = 'Not specified genres';
+    if (genresData.length <1 && LANG ==='uk-UA') genresData = 'Невизначений жанр';
+
 
     console.log('genresData', genresData);
     refs.modal.innerHTML = `
@@ -237,6 +242,8 @@ function openModalMovie(e) {
   async function fetchTrailer(e) { //
    try {
      const video = await apiMovie.fetchTrailerById(movieData.id);
+
+     console.log('trailer', `https://www.youtube.com/embed/${video.results[0].key}?rel=0&showinfo=0&autoplay=1`);
      modalTrailer.innerHTML = `
    <iframe
      class="iframe"
@@ -251,8 +258,8 @@ function openModalMovie(e) {
        
    }
     
-   catch {
-     console.log(error.message);
+   catch {e=>
+     Notiflix.Notify.failure(e);
    }
    finally {
      if (e.target === modalTrailerBtn)
