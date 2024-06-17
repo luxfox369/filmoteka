@@ -1,5 +1,6 @@
 export let refs = {
-  btnThumb: document.querySelector('.button-thumb'),
+  slider:document.querySelector('.top-slider__section'),
+  btnUp: document.querySelector('.button-up'),
   cardContainer: document.querySelector('.home__container'),
   overLay: document.querySelector('.overlay'),
   modal: document.querySelector('.modal'),

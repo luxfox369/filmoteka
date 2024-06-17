@@ -1,17 +1,21 @@
 import { refs } from './refs';
 
 //const btn = document.querySelector('.button-thumb');
-const btn = refs.btnThumb;
+
+const divBtn = document.querySelector('.button-thumb');
+const btnUp = refs.btnUp;
 
 export function scrollFunction() {
-  btn.addEventListener('click', (e) => {
+  divBtn.style.visibility = 'visible';
+  btnUp.addEventListener('click', (e) => {
     e.preventDefault();
-    window.scrollTo({ top: 1000, behavior: 'smooth' });
+    if(refs.slider)window.scrollTo({ top: 750, behavior: 'smooth' });
+    else window.scrollTo({ top: 300, behavior: 'smooth' });
   });
   if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
-    btn.style.visibility = 'visible';
+    btnUp.style.visibility = 'visible';
   } else {
-    btn.style.visibility = 'hidden';
+    btnUp.style.visibility = 'hidden';
   }
 }
 

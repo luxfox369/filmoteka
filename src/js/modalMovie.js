@@ -47,7 +47,7 @@ function openModalMovie(e) {
   
   const movieData = movies.find(movie => movie.id === Number(e.target.closest('.film_card').id)
   );
-  console.log('movieData from film_card', movieData);
+  //console.log('movieData from film_card', movieData);
   
   let textButtonWatched = '';
   let textButtonQueue = '';
@@ -164,7 +164,7 @@ function openModalMovie(e) {
     textButtonQueue,
     textButtonTrailer
   ) {
-    console.log('genre_ids', genre_ids);
+   // console.log('genre_ids', genre_ids);
 
     let genresData = getGenresNames(genre_ids);
    // console.log(LANG);
@@ -172,7 +172,7 @@ function openModalMovie(e) {
     if (genresData.length <1 && LANG ==='uk-UA') genresData = 'Невизначений жанр';
 
 
-    console.log('genresData', genresData);
+    //console.log('genresData', genresData);
     refs.modal.innerHTML = `
     <div class="modal__poster-box">
       <img class="modal__poster" src="${poster_path
@@ -240,26 +240,31 @@ function openModalMovie(e) {
   }
 
   async function fetchTrailer(e) { //
-   try {
-     const video = await apiMovie.fetchTrailerById(movieData.id);
+    try {
+      const trailer = await apiMovie.fetchTrailerById(movieData.id);
 
-     console.log('trailer', `https://www.youtube.com/embed/${video.results[0].key}?rel=0&showinfo=0&autoplay=1`);
-     modalTrailer.innerHTML = `
+    //  console.log('trailer', `${trailer.results[0].key}`);
+      if (trailer.results[0]) {
+        modalTrailer.innerHTML = `
    <iframe
      class="iframe"
      width="560"
      height="315"
-     src="https://www.youtube.com/embed/${video.results[0].key}?rel=0&showinfo=0&autoplay=1"
+     src="https://www.youtube.com/embed/${trailer.results[0].key}?rel=0&showinfo=0&autoplay=1"
      title="YouTube video player"
      frameborder="0"
      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
      allowfullscreen
    ></iframe>`;
-       
+      }
+      else {
+        refs.modalTrailer.classList.remove('active');
+        Notiflix.Notify.failure("NO trailer for this movie");
+      }
    }
     
    catch {e=>
-     Notiflix.Notify.failure(e);
+     Notiflix.Notify.failure(e.message);
    }
    finally {
      if (e.target === modalTrailerBtn)

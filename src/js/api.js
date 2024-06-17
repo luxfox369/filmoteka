@@ -24,7 +24,7 @@ class ApiMovie {
             return data;
         }
         catch {
-           Notiflix.notify.failure('Oops, something went wrong: ');
+           Notiflix.Notify.failure('Oops, something went wrong: ');
         }
         
     }
@@ -44,7 +44,7 @@ class ApiMovie {
      //  console.log("data week", data);
       return data;
     } catch (error) {
-      Notiflix.notify.failure('Oops, something wrong with week: ');
+      Notiflix.Notify.failure('Oops, something wrong with week: ');
     }
   }
     // отримати dcs фільми 
@@ -62,7 +62,7 @@ class ApiMovie {
        // console.log("data day", data);
       return data;
     } catch (error) {
-      Notiflix.notify.failure('Oops, something wrong: ');
+      Notiflix.Notify.failure('Oops, something wrong on day : ');
     }
   }
     //get movie by search https://api.themoviedb.org/3/search/movie
@@ -80,7 +80,7 @@ class ApiMovie {
             return data;
         }
         catch {
-           Notiflix.notify.failure('Oops, something went wrongwith query: ');
+           Notiflix.Notify.failure('Oops, something went wrong with query: ');
         }
     }
     //get  movie by id ttps://api.themoviedb.org/3/movie/{movie_id}
@@ -105,12 +105,15 @@ class ApiMovie {
             language: LANG
         })
         try {
-            const data = await axios(`/movie/${id}/videos`, { params })
-           // console.log("data from api fetchTrailerById ", data);
-            return data.data;
+            const response = await axios(`/movie/${id}/videos`, { params })
+          //  console.log("response.data.results[0] from api ", response.data.results[0]);
+          if (response.data.results[0]) return response.data;
+          else
+            //console.log('from api else no results[0]');
+            alert('Sorry, There is not trailer for this movie ');
         }
         catch {
-           Notiflix.notify.failure('Sorry, no trailer for this movie ');
+           Notiflix.Notify.failure('Something went wrong... ');
         }
 
 }
