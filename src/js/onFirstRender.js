@@ -1,5 +1,5 @@
 
-export let LANG = "en-EN";
+
 import{ scrollFunction} from './btnUp'
 import { apiMovie } from './api';
 import insertCardMarkup from './cardMarkup';
@@ -9,11 +9,15 @@ import { refs } from './refs';
 import Paginator from './paginator';
 import Loader from './loader';
 import { getGenresNames } from './getGenresNames';
+import { language } from './language';
 
 const paginator = new Paginator();
 const loader = new Loader();
 const moviesContainer = refs.cardContainer;
-export let allGenres =[];
+export let allGenres = [];
+let LANG = 'en-EN';
+let langAtr ='eng';
+    
 
 if (paginator.pagination) {
   paginator.pagination.addEventListener('click', onClickPagination);
@@ -48,21 +52,32 @@ async function render(page) {
 window.addEventListener('load', onLoad);
  
 //********вибір мови
+console.log('LANG from onFirstRender до вибору',LANG);
+console.log('langAtr from onFirstRender до вибору', langAtr);
+//console.log('refs.switch', refs.switch);
 if (refs.switch) {
   refs.switch.addEventListener("click", onChecked);
 }
 function  onChecked(e) {
   let element = e.currentTarget;
+ 
   if (element.checked) {
+    console.log('element.checked', element.checked);
     LANG = "uk-UA";
+    langAtr = 'ua';
+    console.log('langAtr from onFirstRender після вибору', langAtr);
     getArrGenres();
     onLoad('load');
    
   }
-  else LANG = "en-EN";
-  getArrGenres();
-  onLoad('load');
-  
+  else {
+    LANG = "en-EN";
+    langAtr = 'eng';
+    console.log('langAtr from onFirstRender після вибору', langAtr);
+    getArrGenres();
+    onLoad('load');
+  }
+   
 }
 //************************* */
 async function onLoad(e) {
@@ -71,7 +86,8 @@ async function onLoad(e) {
     getArrGenres();
   
   //якщо library затягаємо queue
-   if (refs.libraryBtn.classList.contains('current')) {
+  if (refs.libraryBtn.classList.contains('current')) {
+     //тут змінити текст кнопок add/remove watched/queue
      const queueMovies = storage.loadFromQueue();
      insertCardMarkup(queueMovies, refs.libraryContainer);
      refs.libQueueBtn.classList.add('active');
@@ -79,6 +95,7 @@ async function onLoad(e) {
   }
   //якщо home
   try {
+    //тут змінити текст кнопок home/my library
     const { results } = await apiMovie.fetchMovieWeek(); //затягаємо топ за тиджень для слайдера
     insertSliderMarkup(results);
   } catch (error) {
@@ -106,3 +123,4 @@ async function onLoad(e) {
     console.log(error);
   }
 }
+export { LANG, langAtr };

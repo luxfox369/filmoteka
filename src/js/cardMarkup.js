@@ -1,5 +1,5 @@
 import { getGenresNames } from './getGenresNames';
-import { LANG } from './onFirstRender';
+import { LANG, langAtr} from './onFirstRender';
 
 const movieContainer = document.querySelector('.home__container');
 const insertCardMarkup = (movies, container) => {

@@ -5,6 +5,7 @@ import storage from './storage';
 import { Notify } from 'notiflix';
 import Loader from './loader';
 import Paginator from './paginator';
+import { LANG, langAtr } from './onFirstRender';
 
 
 const loader = new Loader();

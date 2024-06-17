@@ -17,13 +17,12 @@ export let refs = {
   modalToWatchedBtn: document.querySelector('.watched'), //клас кнопки в модалці WATCHED
   modalToQueueBtn: document.querySelector('.queue'), // клас кнопки модалці  QUEUE
   modalToTrailerBtn:document.querySelector('.trailer'),
-  
- // libBtn: document.querySelector('.header__nav-btn--lib'),
   switch: document.querySelector('.switch'),//повзунок мови
   label: document.querySelector('.switch-for'),
   language: document.querySelector('.switch-for:before'),//.switch-for:before 
   modalTrailer: document.querySelector('.overlay--trailer'),
-  sliderBar : document.querySelector('.top-slider__wrapper'),
+  sliderBar: document.querySelector('.top-slider__wrapper'),
+   // libBtn: document.querySelector('.header__nav-btn--lib'),
   
 };
 

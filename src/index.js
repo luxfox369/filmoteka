@@ -5,7 +5,7 @@ import './js/storage';
 import './js/api';
 import './js/sliderMarkup';
 import './js/onFirstRender';
-//import './js/language';
+import './js/language';
 import './js/paginator';
 import './js/btnUp';
 import './js/searchQuery';

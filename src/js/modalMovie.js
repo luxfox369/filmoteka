@@ -3,16 +3,17 @@ import { refs } from './refs';
 import storage from './storage';
 import { getGenresNames } from './getGenresNames';
 import imagePlaceholder from '../images/image-placeholder.png';
-import { LANG } from './onFirstRender';
 import Notiflix from 'notiflix';
+import { language, } from './language';
+import { langAtr } from './onFirstRender';
 
 //import fetchTrailer   from './trailers';
 
-
+console.log('langAtr from midalMovie', langAtr);
  const containerHome = document.querySelector('.home__container'); // 
  const containerLibrary  = document.querySelector('.library__container');//  
  const modalTrailer = document.querySelector('.overlay--trailer');
- let modalTrailerBtn ='';
+ //let modalTrailerBtn ;
 
 if (containerHome) {
   containerHome.addEventListener('click', openModalMovie);
@@ -20,18 +21,26 @@ if (containerHome) {
 if (containerLibrary ) {
   containerLibrary .addEventListener('click', openModalMovie);
 }
-const addWatched = 'ADD TO WATCHED';
+//тут вибрати напис
+/*const addWatched = 'ADD TO WATCHED';
 const removeWatched = 'REMOVE FROM WATCHED';
 const addQueue = 'ADD TO QUEUE';
 const removeQueue = 'REMOVE FROM QUEUE';
+let textButtonTrailer = 'WATCH TRAILER';*/
 
-let saveDataMovie ;
-let textButtonTrailer = 'WATCH TRAILER';
+
+
 let moviesWatched, moviesQueue;
 
 function openModalMovie(e) {
   e.preventDefault();
   let movies = [];
+  let addWatched = language.addWatched[langAtr];
+//console.log('addWatched', addWatched);
+  let removeWatched = language.removeWatched[langAtr];
+  let addQueue = language.addQueue[langAtr];
+  let removeQueue = language.removeQueue[langAtr];
+  let textButtonTrailer= language.watchTrailer[langAtr];
 
   openModalView();
   //якщо home берем фільми з ключа  current
@@ -49,8 +58,8 @@ function openModalMovie(e) {
   );
   //console.log('movieData from film_card', movieData);
   
-  let textButtonWatched = '';
-  let textButtonQueue = '';
+  let textButtonWatched = addWatched ;
+  let textButtonQueue = addQueue ;
   //====WATCHED=====
   //Виясняємо що має бути на кнопці WATCHED
   let moviesInWatched = storage.loadFromWatched();
@@ -58,9 +67,9 @@ function openModalMovie(e) {
 
   function isWatched(movieData, moviesInWatched) {
     if (moviesInWatched.findIndex(movie => movie.id === movieData.id) < 0) {
-      return textButtonWatched = addWatched;
+      return (textButtonWatched = addWatched);
     } else {
-      return (textButtonWatched = removeWatched);
+      return (textButtonWatched = removeWatched); 
     }
   }
   // ==== QUEUE ====
@@ -70,9 +79,9 @@ function openModalMovie(e) {
   
   function isQueue(movieData, moviesInQuery) {
     if (moviesInQuery.findIndex(movie => movie.id === movieData.id) < 0) {
-      return textButtonQueue = addQueue;
+      return (textButtonQueue = addQueue);
     } else {
-      return (textButtonQueue = removeQueue);
+      return (textButtonQueue = removeQueue); 
     }
   }
   // ====рендеримо дані про фільм
@@ -81,7 +90,7 @@ function openModalMovie(e) {
   //знаходимо кнопки в модалці
   const buttonWatched = document.querySelector('.watched');
   const buttonQueue = document.querySelector('.queue');
-  modalTrailerBtn = document.querySelector('.trailer-btn');
+  const modalTrailerBtn = document.querySelector('.trailer-btn');
     
   //призначаємо дії кнопок в модалці
   buttonWatched.addEventListener('click', fWatched); //libWatchedBtn
@@ -94,15 +103,15 @@ function openModalMovie(e) {
   function fWatched(e) {
     moviesWatched = storage.loadFromWatched();
     
-    if (e.target.textContent === 'ADD TO WATCHED') {
+    if (e.target.textContent === addWatched) { 
       moviesWatched.push(movieData);       // додає в масив
-      e.target.textContent = 'REMOVE FROM WATCHED';
+      e.target.textContent = removeWatched;
              
     } else {
       moviesWatched = moviesWatched.filter(
         ({ id }) => id !== movieData.id
       );                                     // видаляє  з масиву
-      e.target.textContent = 'ADD TO WATCHED';
+      e.target.textContent = addWatched;//language.addWatched[langAtr];//'ADD TO WATCHED';
     }
     storage.saveToWatched(moviesWatched); //записує зміни в локалСторедж
     /* if (
@@ -123,13 +132,13 @@ function openModalMovie(e) {
   function fQueue(e) {
     moviesQueue = storage.loadFromQueue();
     
-    if (e.target.textContent === 'ADD TO QUEUE') {
+    if (e.target.textContent === language.addQueue[langAtr]) { //'ADD TO QUEUE'
       moviesQueue.push(movieData);
-      e.target.textContent = 'REMOVE FROM QUEUE';
+      e.target.textContent = language.removeQueue[langAtr];//'REMOVE FROM QUEUE';
     }
     else {
       moviesQueue = moviesQueue.filter(({ id }) => id !== movieData.id);
-      e.target.textContent = 'ADD TO QUEUE';
+      e.target.textContent = language.addQueue[langAtr];//'ADD TO QUEUE';
     }
     storage.saveToQueue(moviesQueue);
     /* if (
@@ -168,9 +177,9 @@ function openModalMovie(e) {
 
     let genresData = getGenresNames(genre_ids);
    // console.log(LANG);
-    if (genresData.length <1 && LANG==='"en-EN"') genresData = 'Not specified genres';
-    if (genresData.length <1 && LANG ==='uk-UA') genresData = 'Невизначений жанр';
-
+    /*if (genresData.length <1 && LANG==='en-EN') genresData = 'Not specified genres';
+    if (genresData.length <1 && LANG ==='uk-UA') genresData = 'Невизначений жанр';*/
+    if (genresData.length < 1) genresData = language.noGenres[langAtr];
 
     //console.log('genresData', genresData);
     refs.modal.innerHTML = `
