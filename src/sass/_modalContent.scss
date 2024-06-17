@@ -201,15 +201,16 @@
   font-size: 14px;
   font-weight: 500;
   font-style: italic;
+  text-decoration: underline;
   line-height: 14px;
   letter-spacing: 0em;
   text-align: left;
 }
 
 .modal__film-plot {
-  margin-bottom: 25px;
+  margin-bottom: 5px;
   padding-top: 8px;
-  padding-bottom: 20px;
+  padding-bottom: 8px;
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
@@ -220,9 +221,9 @@
 .modal__film-btn-List {
   display: flex;
   margin: 0 auto;
-  gap: 5px;
+  gap: 3px;
 
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 500;
   line-height: 12px;
   letter-spacing: 0em;
@@ -246,6 +247,7 @@
   background-color: $light-bg-color;
   border: 1px solid $dark-bg-color;
   .modal__film-btn-item:first-child & {
+    border-radius: 150px;
     color: $light-font-color;
     background-color: $grey-bg-color; //transparent;
     border: 1px solid $dark-bg-color;
@@ -270,7 +272,7 @@
 }
 .modal__film-btn-item:first-child :hover {
   background-color: $accent-color;
-  color: $dark-bg-color;
+  //color: $dark-bg-color;
   border: 1px solid $dark-bg-color;
 }
 
