@@ -9,10 +9,11 @@ export function scrollFunction() {
   divBtn.style.visibility = 'visible';
   btnUp.addEventListener('click', (e) => {
     e.preventDefault();
-    if(refs.slider)window.scrollTo({ top: 750, behavior: 'smooth' });
-    else window.scrollTo({ top: 300, behavior: 'smooth' });
+   // if(refs.slider) window.scrollTo({ top: 0, behavior: 'smooth' });
+   // else
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
-  if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
     btnUp.style.visibility = 'visible';
   } else {
     btnUp.style.visibility = 'hidden';
