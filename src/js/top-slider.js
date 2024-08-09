@@ -13,18 +13,18 @@ const topMovies = new Swiper('[data-swiper="top"]', {
   slidesPerView: 1,
   spaceBetween: 10,
   loop:true,
-  initialSlide: 3,
+  initialSlide: 5, //3
 
   // Responsive breakpoints
   breakpoints: {
     // when window width is >= 320px
     320: {
-      slidesPerView: 1.5,
+      slidesPerView: 1.2, //1.5
 
     },
     // when window width is >= 480px
     480: {
-      slidesPerView: 2.5,
+      slidesPerView: 2.2, //2.5
   
     },
     // when window width is >= 640px

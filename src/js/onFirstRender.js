@@ -1,7 +1,7 @@
 import{ scrollFunction} from './btnUp'
 import { apiMovie } from './api';
 import insertCardMarkup from './cardMarkup';
-import insertSliderMarkup from './sliderMarkup';
+import insertiderMarkup from './sliderMarkup';
 import { refs }  from './refs';
 import storage     from './storage';
 import { language }  from './language';
@@ -108,13 +108,13 @@ async function onLoad(e) {
     
      const queueMovies = storage.loadFromQueue();
      insertCardMarkup(queueMovies, refs.libraryContainer);
-     refs.libQueueBtn.classList.add('active');
+     refs.libraryBtn.classList.add('active');
     return;
   }
   //якщо home
   try {
     const { results } = await apiMovie.fetchMovieWeek(); //затягаємо топ за тиджень для слайдера
-    insertSliderMarkup(results);
+    insertiderMarkup(results);
   } catch (error) {
     console.log(error);
   }

@@ -1,4 +1,6 @@
 export const refs = {
+  headerTitle: document.querySelector('.header__title'), //Filmoteka
+  //headerRights: document.querySelector('.header__rights'), //out of TMDB API</span>
   slider:document.querySelector('.top-slider__section'),
   btnUp: document.querySelector('.button-up'),
   overLay: document.querySelector('.overlay'),
@@ -7,8 +9,7 @@ export const refs = {
   loader: document.querySelector('.loader'),
   homeBtn:document.querySelector('.header__nav-btn--home'),
   libraryBtn: document.querySelector('.header__nav-btn--lib'),
-  headerTitle: document.querySelector('.header__title'), //Filmoteka
-  headerRights: document.querySelector('.header__rights'), //out of TMDB API</span>
+  cardContainer: document.querySelector('.home__container'),
   input: document.querySelector('.header__input'),
   homeContainer: document.querySelector('.home__container'),
   libraryContainer: document.querySelector('.library__container'),
