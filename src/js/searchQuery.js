@@ -1,5 +1,5 @@
 import { apiMovie } from './api';
-import { refs } from './refs';
+import { refs }  from './refs';
 import insertCardMarkup from './cardMarkup';
 import storage from './storage';
 import { Notify } from 'notiflix';

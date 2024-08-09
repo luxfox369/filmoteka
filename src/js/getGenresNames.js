@@ -1,6 +1,6 @@
 import storage from './storage';
 import { allGenres } from './onFirstRender';
-import { language } from './language';
+import { language }  from './language';
 import { LANG, langAtr } from './onFirstRender';
 export const getGenresNames = ids => {
 
@@ -15,10 +15,10 @@ export const getGenresNames = ids => {
     //if (genresNames.length < 1 && LANG ==="en-EN") return genresNames = 'Not specified genres';
   //if (genresNames.length < 1 && LANG ==='uk-UA') return genresNames = 'Жанр не вказано';
   if (genresNames.length < 1) return genresNames = language.noGenres[langAtr];
-  if (genresNames.length > 3 && LANG === "en-EN") {
+  if (genresNames.length > 3 && refs.switch.checked === false ) { //LANG === "en-EN"
     return (genresNames = [genresNames[0], genresNames[1], 'Other']);
   }
-  if (genresNames.length > 3 && LANG === "uk-UA") {
+  if (genresNames.length > 3 && refs.switch.checked === true) {
     return (genresNames = [genresNames[0], genresNames[1], 'Інші']);
   }
   

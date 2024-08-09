@@ -1,15 +1,16 @@
 import { apiMovie } from './api';
-import { refs } from './refs';
-import storage from './storage';
+import { refs }  from './refs';
+import  storage  from './storage';
+import { language } from './language';
 import { getGenresNames } from './getGenresNames';
 import imagePlaceholder from '../images/image-placeholder.png';
 import Notiflix from 'notiflix';
-import { language, } from './language';
-import { langAtr } from './onFirstRender';
+
+import { langAtr ,LANG} from './onFirstRender';
 
 //import fetchTrailer   from './trailers';
 
-console.log('langAtr from midalMovie', langAtr);
+console.log('langAtr from modalMovie', langAtr);
  const containerHome = document.querySelector('.home__container'); // 
  const containerLibrary  = document.querySelector('.library__container');//  
  const modalTrailer = document.querySelector('.overlay--trailer');
@@ -35,6 +36,7 @@ let moviesWatched, moviesQueue;
 function openModalMovie(e) {
   e.preventDefault();
   let movies = [];
+  console.log('langAtr ', langAtr);
   let addWatched = language.addWatched[langAtr];
 //console.log('addWatched', addWatched);
   let removeWatched = language.removeWatched[langAtr];
@@ -268,12 +270,12 @@ function openModalMovie(e) {
       }
       else {
         refs.modalTrailer.classList.remove('active');
-        Notiflix.Notify.failure("NO trailer for this movie");
+        Notiflix.Notify.info("Undefined trailer for this movie");
       }
    }
     
    catch {e=>
-     Notiflix.Notify.failure(e.message);
+     Notiflix.Notify.failure('Oops something went wrong with traier');
    }
    finally {
      if (e.target === modalTrailerBtn)

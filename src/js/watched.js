@@ -1,4 +1,4 @@
-import { refs } from './refs';
+import { refs }  from './refs';
 import storage from './storage';
 import { getGenresNames } from './getGenresNames';
 import Notiflix from 'notiflix';

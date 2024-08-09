@@ -144,14 +144,14 @@
   align-items: center;
   text-align: center;
   text-transform: uppercase;
-  background: $light-bg-color;
-  color: $accent-color; //чорний
+  background: $grey-bg-color;
+  color: $light-font-color; //чорний
   transition: color 250ms linear, background-color 250ms linear;
 
   &:hover,
   &:focus {
-    color: $light-font-color;
-    //background-color: $accent-color;
+    color: $primary-font-color;
+    background-color: $accent-color;
   }
 
   &--home {

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { refs } from './refs';
-import { LANG } from './onFirstRender';
+import refs  from './refs';
+import { LANG ,langAtr} from './onFirstRender';
 import { Notiflix } from 'notiflix';
 
  

@@ -1,4 +1,4 @@
-import { refs } from './refs';
+import { refs }  from './refs';
 import { showQueue } from './queue';
 import { showWatched } from './watched';
 

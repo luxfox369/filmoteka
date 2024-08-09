@@ -20,8 +20,7 @@
 }
 
 .library__nav-btn {
-display: block;
-  background: $light-bg-color;
+  display: block;
   border-radius: 100px;
   font-family: $primary-font;
   font-weight: 500;
@@ -31,7 +30,8 @@ display: block;
   align-items: center;
   text-align: center;
   text-transform: uppercase;
-  color: $accent-color;
+  color: $primary-font-color;
+  background: $light-bg-color;
   transition: color 250ms linear, background-color 250ms linear;
 
   &:hover,
@@ -47,8 +47,8 @@ display: block;
       padding: 12px 23px;
     }
     @media screen and (min-width: 1280px) {
-        padding: 14px 24px;
-      }
+      padding: 14px 24px;
+    }
   }
   &--queue {
     padding: 10px 24px;
@@ -57,11 +57,11 @@ display: block;
       padding: 12px 24px;
     }
     @media screen and (min-width: 1280px) {
-        padding: 14px 32px;
-      }
+      padding: 14px 32px;
+    }
   }
 }
 .active {
-    color: $light-font-color;
-    background-color: $accent-color;   
+  color: $light-font-color;
+  background-color: $accent-color;
 }

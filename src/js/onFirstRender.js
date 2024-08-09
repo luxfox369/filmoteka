@@ -1,23 +1,28 @@
-
-
 import{ scrollFunction} from './btnUp'
 import { apiMovie } from './api';
 import insertCardMarkup from './cardMarkup';
 import insertSliderMarkup from './sliderMarkup';
-import storage from './storage';
-import { refs } from './refs';
+import { refs }  from './refs';
+import storage     from './storage';
+import { language }  from './language';
 import Paginator from './paginator';
 import Loader from './loader';
 import { getGenresNames } from './getGenresNames';
-import { language } from './language';
+
+import Notiflix from 'notiflix';
+
 
 const paginator = new Paginator();
 const loader = new Loader();
-const moviesContainer = refs.cardContainer;
+const moviesContainer = refs.homeContainer;
 export let allGenres = [];
-let LANG = 'en-EN';
-let langAtr ='eng';
-    
+let LANG, langAtr;
+if (!storage.loadLang()) {
+  LANG = language.LANG.eng;
+  langAtr = language.langAtr.eng;
+  getArrGenres();
+}
+else  langAtr = storage.loadLang();
 
 if (paginator.pagination) {
   paginator.pagination.addEventListener('click', onClickPagination);
@@ -50,11 +55,7 @@ async function render(page) {
 
 
 window.addEventListener('load', onLoad);
- 
-//********вибір мови
-console.log('LANG from onFirstRender до вибору',LANG);
-console.log('langAtr from onFirstRender до вибору', langAtr);
-//console.log('refs.switch', refs.switch);
+
 if (refs.switch) {
   refs.switch.addEventListener("click", onChecked);
 }
@@ -62,18 +63,24 @@ function  onChecked(e) {
   let element = e.currentTarget;
  
   if (element.checked) {
+    //тут змінити текст кнопок HOME/MY LIBRARY
     console.log('element.checked', element.checked);
     LANG = "uk-UA";
-    langAtr = 'ua';
-    console.log('langAtr from onFirstRender після вибору', langAtr);
+    langAtr = 'uk';
+    storage.saveLang(langAtr );
+    Notiflix.Notify.info('Мова сторінки: UA');
+   
     getArrGenres();
     onLoad('load');
    
   }
   else {
+    console.log('element.checked', element.checked);
     LANG = "en-EN";
     langAtr = 'eng';
-    console.log('langAtr from onFirstRender після вибору', langAtr);
+    storage.saveLang(langAtr );
+    Notiflix.Notify.info('Site language:  EN ');
+    
     getArrGenres();
     onLoad('load');
   }
@@ -81,13 +88,24 @@ function  onChecked(e) {
 }
 //************************* */
 async function onLoad(e) {
-  //e.preventDefault();
-  //if (storage.loadGenres().length < 1)
-    getArrGenres();
+   if (!storage.loadLang()) storage.saveLang(langAtr);
+  if (storage.loadLang() === "uk" && refs.switch) refs.switch.checked = true;
+  else 
+  if (storage.loadGenres().length < 1)  getArrGenres();
+   
+//перемальовування написів
+  refs.homeBtn.textContent = language.homeBtn[langAtr];
+  refs.libraryBtn.textContent = language.libraryBtn[langAtr];
+  if (refs.input) refs.input.placeholder = language.searchPlaceHolder[langAtr];
+  refs.headerTitle.textContent = language.headerTitle[langAtr];
+  //refs.headerRights.textContent = language.headerRights[langAtr];
   
-  //якщо library затягаємо queue
+    //якщо library затягаємо queue
   if (refs.libraryBtn.classList.contains('current')) {
-     //тут змінити текст кнопок add/remove watched/queue
+    //тут змінити текст кнопок add/remove watched/queue
+    refs.libWatchedBtn.textContent = language.libWatched[langAtr]; //watched
+    refs.libQueueBtn.textContent = language.libQueue[langAtr]; // queue
+    
      const queueMovies = storage.loadFromQueue();
      insertCardMarkup(queueMovies, refs.libraryContainer);
      refs.libQueueBtn.classList.add('active');
@@ -95,7 +113,6 @@ async function onLoad(e) {
   }
   //якщо home
   try {
-    //тут змінити текст кнопок home/my library
     const { results } = await apiMovie.fetchMovieWeek(); //затягаємо топ за тиджень для слайдера
     insertSliderMarkup(results);
   } catch (error) {
@@ -110,12 +127,7 @@ async function onLoad(e) {
     if (!storage.loadFromWatched()) storage.saveToWatched([]);
     if (!storage.loadFromQueue()) storage.saveToQueue([]);
 
-    /*if (!localStorage.getItem('wathedArr')) {
-      localStorage.setItem('wathedArr', JSON.stringify([]));
-    }
-    if (!localStorage.getItem('queueArr')) {
-      localStorage.setItem('queueArr', JSON.stringify([]));
-    }*/
+    
      
     insertCardMarkup(results, moviesContainer);
     paginator.makeMarkup();

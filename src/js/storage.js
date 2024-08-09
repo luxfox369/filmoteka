@@ -1,12 +1,12 @@
-import { api } from "./api";
-import Notiflix from "notiflix";
 
-const GENRES_KEY = 'genres'; //тут масив жанрів
+const LANG_KEY = 'currentLang'; //текуча мова сторінки
+const GENRES_KEY = 'genres'; // масив жанрів
 const PAGE_KEY = 'page'; //номер поточної сторінки
-const TOTAL_KEY = 'total_pages'; //кількість сторінок після запиту
-const CURRENT_KEY = 'current'; //тут масив зафетчиних фільмів
-const WATCHED_KEY = 'wathedArr'; //тут масив переглянутих фільмів
-const QUEUE_KEY = 'queueArr'; //тут масив фільмів для майьутнього перегляду
+const TOTAL_KEY = 'total_pages'; //кількість сторінок на  запит
+const CURRENT_KEY = 'currentPage'; // масив зафетчиних фільмів
+const WATCHED_KEY = 'wathedArray'; // масив переглянутих фільмів
+const QUEUE_KEY = 'queueArray'; // масив фільмів для бажаного перегляду
+
 //базові дії обернуті в try/catch
 const save = (key, value) => {
     try {
@@ -37,7 +37,13 @@ const remove = key => {
     }
 }
 //використання базових функцій в записуванні/витяганні/перевірці localStorage
-const saveGenres = arrGenres => {
+const saveLang = (curLang)=> {
+    save(LANG_KEY, curLang);
+}
+const loadLang = () => {
+    return load(LANG_KEY);
+}
+const saveGenres = (arrGenres) => {
      save(GENRES_KEY,arrGenres)
 }
 const loadGenres = () => {
@@ -86,6 +92,8 @@ export default {
     save,
     load,
     remove,
+    saveLang,
+    loadLang,
     saveGenres,
     loadGenres,
     initialLocal,
@@ -99,7 +107,4 @@ export default {
     loadFromWatched,
     saveToQueue,
     loadFromQueue,
-    
-
-
-}
+    }

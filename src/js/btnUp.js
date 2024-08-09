@@ -1,4 +1,4 @@
-import { refs } from './refs';
+import { refs }  from './refs';
 
 //const btn = document.querySelector('.button-thumb');
 
@@ -6,7 +6,7 @@ const divBtn = document.querySelector('.button-thumb');
 const btnUp = refs.btnUp;
 
 export function scrollFunction() {
-  divBtn.style.visibility = 'visible';
+  btnUp.style.visibility = 'visible';
   btnUp.addEventListener('click', (e) => {
     e.preventDefault();
    // if(refs.slider) window.scrollTo({ top: 0, behavior: 'smooth' });

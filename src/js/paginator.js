@@ -1,4 +1,4 @@
-import { refs } from './refs';
+import { refs }  from './refs';
 
 // Інструкція!
 // 1. Імпортувати класс Paginator, створити екземпляр та зберегти в змінну;
